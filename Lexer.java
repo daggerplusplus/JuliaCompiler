@@ -27,6 +27,7 @@ public class Lexer {
       keywords.put("baremodule",  TokenType.BAREMODULE);
       keywords.put("global",      TokenType.GLOBAL);      
       keywords.put("print",       TokenType.PRINT);
+      keywords.put("println",     TokenType.PRINTLN);
       keywords.put("return",      TokenType.RETURN);
       keywords.put("super",       TokenType.SUPER);
       keywords.put("this",        TokenType.THIS);
@@ -149,9 +150,7 @@ public class Lexer {
         }
     }
   
-      List<Token> createTokens() throws IOException {
-            //getNextString();  //get first line      
-  
+      List<Token> createTokens() throws IOException {         
       while (!isAtEnd()) {
         start = current;
         char c = forward();        

@@ -18,19 +18,23 @@ class Main {
     Lexer test2 = new Lexer(source2);
     Lexer test3 = new Lexer(source3);
 
-    System.out.println("Test 1: ");
+/*     System.out.println("Test 1: ");    
+    System.out.println("<program>");
     List<Token> tokens = test1.createTokens();
     Parser Ptest1 = new Parser(tokens);
-    Ptest1.parse();
-    //for (Token token : tokens) System.out.println(token);
-    System.out.println();
+    List<Statement> stmts1 = Ptest1.parse();
+    for (Statement stmt:stmts1) System.out.println(new Printer().print(stmt));    
+    System.out.println(); */
 
-/*     System.out.println("Test 2: ");
+    System.out.println("Test 2: ");
     List<Token> tokens2 = test2.createTokens();
-    for (Token token : tokens2) System.out.println(token);
+    Parser Ptest2 = new Parser(tokens2);
+    List<Statement> stmts2 = Ptest2.parse();
+    for (Statement stmt:stmts2) System.out.println(new Printer().print(stmt));    
+    //for (Token token : tokens2) System.out.println(token);
     System.out.println();
 
-
+    /*
     System.out.println("Test 3: ");
     List<Token> tokens3 = test3.createTokens();
     for (Token token : tokens3) System.out.println(token);
