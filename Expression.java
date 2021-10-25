@@ -39,8 +39,8 @@ abstract class Expression {
   }
 ////////////////////////////////////////////////////////////////////////////////////////////
   static class Binary extends Expression{
-    Binary(Expression expr, Token operator, Expression right) {
-      this.expr = expr;
+    Binary(Expression left, Token operator, Expression right) {
+      this.left = left;
       this.operator = operator;
       this.right = right;
     }
@@ -48,7 +48,7 @@ abstract class Expression {
     <E> E accept(Visitor<E> visitor) {
       return visitor.visitBinaryExpr(this);
     }
-    final Expression expr;
+    final Expression left;
     final Token operator;
     final Expression right;
   }

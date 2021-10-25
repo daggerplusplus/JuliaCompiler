@@ -7,10 +7,10 @@ class Parser {
   private int current = 0;
   
     //these tokens are found at beginning of statements
-  List<TokenType> newLineTokens = new ArrayList<TokenType>(Arrays.asList(
+/*   List<TokenType> newLineTokens = new ArrayList<TokenType>(Arrays.asList(
     TokenType.FUNCTION, TokenType.IDENTIFIER, TokenType.PRINT,
     TokenType.END, TokenType.IF, TokenType.ELSE, TokenType.WHILE
-  ));
+  )); */
 
   Parser(List<Token> tokens) {
     this.tokens = tokens;
@@ -113,7 +113,7 @@ private Expression term() {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 private Expression unary() {
-  if(grabAndGo(TokenType.BANG,TokenType.MINUS)) {
+  if(grabAndGo(TokenType.PLUS,TokenType.MINUS)) {
     Token op = previous();
     Expression right = unary();
     return new Expression.Unary(op,right);    
@@ -282,12 +282,6 @@ private Token moveForward() {
     if (!end()) current++;
     return previous();
 }
-
-boolean checkNewLine() { //if current token is in newLineTokens, return true;
-  if (newLineTokens.contains(look().type)) return true;
-  return false;
-}
-
 private boolean end() { return look().type == TokenType.EOF; }
 private Token look() { return tokens.get(current); }
 private Token previous() { return tokens.get(current-1);}

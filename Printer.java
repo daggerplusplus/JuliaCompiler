@@ -19,7 +19,7 @@ class Printer implements Expression.Visitor<String>, Statement.Visitor<String> {
         if(stmt.elsebody == null) {
             return encloseChange("IF","CONDITION",stmt.condition,stmt.elseifbody);
         }
-        return encloseChange("ELSE-IF","CONDITION", stmt.condition, stmt.elseifbody,stmt.elsebody);
+        return encloseChange("ELSE-IF","CONDITION", stmt.condition,stmt.elseifbody,"[ELSE",stmt.elsebody,"]");
     }
 
     @Override
@@ -49,7 +49,7 @@ class Printer implements Expression.Visitor<String>, Statement.Visitor<String> {
     public String visitVariableStmt(Statement.Variable stmt) {
         StringBuilder builder = new StringBuilder();
         if (stmt.initializer == null) return encloseChange("VariableDeclaration",builder.toString(),stmt.name);
-        return encloseChange("VariableDeclaration",builder.toString(),"[Assignment",stmt.name,stmt.initializer,"]");
+        return encloseChange("VariableDeclaration",builder.toString(),"[ASSIGNMENT",stmt.name,stmt.initializer,"]");
     }
     @Override
     public String visitAssignExpr(Expression.Assign expr) {
@@ -61,7 +61,7 @@ class Printer implements Expression.Visitor<String>, Statement.Visitor<String> {
     }
     @Override
     public String visitBinaryExpr(Expression.Binary expr) {
-        return enclose(expr.operator.lexeme,expr.right);
+        return enclose(expr.operator.lexeme,expr.left,expr.right);
     }
     @Override
     public String visitUnaryExpr(Expression.Unary expr) {
@@ -89,23 +89,16 @@ class Printer implements Expression.Visitor<String>, Statement.Visitor<String> {
         return encloseChange("Assignment", expr.object, expr.name.lexeme, expr.value);
     }
 
-    
-    
-    
-    
-    
-    
-    
     ////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    private String enclose(String name, Expression... exprs) {
+    private String enclose(String operator, Expression... exprs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("[").append(name);
+        builder.append("[").append(operator);
         for (Expression expr:exprs) {
             builder.append(" ");
-            builder.append(expr.accept(this));
+            builder.append(expr.accept(this));            
         }
         builder.append("]");
         return builder.toString();
@@ -123,7 +116,7 @@ class Printer implements Expression.Visitor<String>, Statement.Visitor<String> {
             if (part instanceof Expression) builder.append(((Expression)part).accept(this));
             else if (part instanceof Statement) builder.append(((Statement)part).accept(this));
             else if (part instanceof Token) builder.append(((Token)part).lexeme);
-            else if (part instanceof List) change(builder,((List)part).toArray());
+            else if (part instanceof List) change(builder,((List)part).toArray());            
             else builder.append(part);
         }
     }

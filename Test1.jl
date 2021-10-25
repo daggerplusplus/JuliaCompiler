@@ -1,5 +1,5 @@
 //Test 1 in Julia
-function a(y,z)
+function a()
 	x = 1
 		print(x)
 		
