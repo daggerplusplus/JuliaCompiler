@@ -9,8 +9,8 @@ abstract class Expression {
     E visitLogicalExpr(Logical expr);
     E visitLiteralExpr(Literal expr);
     E visitCallExpr(Call expr);
-    E visitGetExpr(Get expr);
-    E visitSetExpr(Set expr);
+    //E visitGetExpr(Get expr);
+    //E visitSetExpr(Set expr);
   }
 ////////////////////////////////////////////////////////////////////////////////////////////
   static class Assign extends Expression{
@@ -107,6 +107,7 @@ abstract class Expression {
     final List<Expression> args;
   }
 ////////////////////////////////////////////////////////////////////////////////////////////
+/*
 static class Get extends Expression{
   Get(Expression object, Token name) {
     this.object = object;
@@ -134,6 +135,6 @@ static class Set extends Expression{
   final Token name;
   final Expression value;
 }
-  
+*/  
 abstract <E> E accept(Visitor<E> visitor);
 }

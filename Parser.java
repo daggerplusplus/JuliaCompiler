@@ -42,10 +42,10 @@ class Parser {
         Token name = ((Expression.Variable)expr).name;
         return new Expression.Assign(name, value);
       }
-      else if (expr instanceof Expression.Get) {
+     /*  else if (expr instanceof Expression.Get) {
         Expression.Get get = (Expression.Get) expr;
         return new Expression.Set(get.object, get.name, value);
-      }      
+      }       */
     }
     return expr;
   }
