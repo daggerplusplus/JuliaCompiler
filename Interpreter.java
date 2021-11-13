@@ -126,9 +126,10 @@ class Interpreter implements Expression.Visitor<Object>, Statement.Visitor<Void>
         List<Object> args = new ArrayList<>();
         for (Expression arg: expr.args) args.add(evaluate(arg));
 
-        JuliaCallable function = (JuliaCallable) call;
+        //JuliaCallable function = (JuliaCallable) call;
         
-        return function.call(this,args);
+        return null;
+        //return function.call(this,args);
     }
 
     @Override

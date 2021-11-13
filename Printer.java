@@ -80,14 +80,6 @@ class Printer implements Expression.Visitor<String>, Statement.Visitor<String> {
     public String visitCallExpr(Expression.Call expr) {
         return encloseChange("CALL", expr.expr,expr.args);
     }
-    @Override
-    public String visitGetExpr(Expression.Get expr) {
-        return encloseChange(".", expr.object,expr.name.lexeme);
-    }
-    @Override
-    public String visitSetExpr(Expression.Set expr) {
-        return encloseChange("Assignment", expr.object, expr.name.lexeme, expr.value);
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////
