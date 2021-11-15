@@ -6,10 +6,36 @@ class Interpreter implements Expression.Visitor<Object>, Statement.Visitor<Void>
     Environment env = globs;
 
     private final Map<Expression,Integer> locals = new HashMap<>();
-
-    void interpret(List<Statement> stmts)
-    {
+  
+    void interpret(List<Statement> stmts)    {
+     try {
        for (Statement stmt:stmts) execute(stmt);        
+     } catch (RuntimeException e) {
+     System.out.println("Error in interpret function");
+     }
+    }
+
+    void interpret(Expression expr) {
+        try {
+            Object value = evaluate(expr);
+            System.out.println(Stringer(value));
+        } catch (RuntimeException e) {
+            System.out.println("Interpreter error");
+        }
+    }
+
+    private String Stringer(Object object) {
+        if (object == null) return "null";
+
+        if (object instanceof Double) {
+            String text = object.toString();
+            if (text.endsWith(".0")) {
+                text = text.substring(0, text.length() - 2);
+            }
+            return text;
+        }
+
+        return object.toString();
     }
 
     private Object evaluate(Expression expr) {
@@ -23,15 +49,21 @@ class Interpreter implements Expression.Visitor<Object>, Statement.Visitor<Void>
 
     void executeBlock(List<Statement> stmts, Environment env) {
         Environment prev = this.env;
-
+        this.env = env;
         for (Statement stmt:stmts) execute(stmt);
+        this.env = prev;
+    }
+
+    void resolve(Expression expr, int depth) {
+        locals.put(expr,depth);
     }
 
 
-/*     @Override
+    @Override
     public Void visitBlockStmt(Statement.Block stmt) {
-
-    } */
+        executeBlock(stmt.stmts, new Environment(env));
+        return null;
+    } 
 
     @Override
     public Void visitExprStmt(Statement.Expr stmt) {
@@ -41,8 +73,8 @@ class Interpreter implements Expression.Visitor<Object>, Statement.Visitor<Void>
 
     @Override
     public Void visitFunctionStmt(Statement.Function stmt) {
-        //JuliaFunction function = new JuliaFunction(stmt,env,false);
-        //env.define(stmt.name.lexeme,function);
+        JuliaFunction function = new JuliaFunction(stmt,env,false);
+        env.define(stmt.name.lexeme,function);
         return null;
     }
 
@@ -56,13 +88,13 @@ class Interpreter implements Expression.Visitor<Object>, Statement.Visitor<Void>
     @Override
     public Void visitPrintStmt(Statement.Print stmt) {
         Object value = evaluate(stmt.text);
-        System.out.print(value.toString());
+        System.out.print(Stringer(value));
         return null;
     }
     @Override
     public Void visitPrintlnStmt(Statement.Println stmt) {
         Object value = evaluate(stmt.text);
-        System.out.println(value.toString());
+        System.out.println(Stringer(value));
         return null;
     }
 
@@ -126,10 +158,9 @@ class Interpreter implements Expression.Visitor<Object>, Statement.Visitor<Void>
         List<Object> args = new ArrayList<>();
         for (Expression arg: expr.args) args.add(evaluate(arg));
 
-        //JuliaCallable function = (JuliaCallable) call;
+        JuliaCallable function = (JuliaCallable) call;       
         
-        return null;
-        //return function.call(this,args);
+        return function.call(this,args);
     }
 
     @Override

@@ -6,12 +6,6 @@ class Parser {
   private final List<Token> tokens;
   private int current = 0;
   
-    //these tokens are found at beginning of statements
-/*   List<TokenType> newLineTokens = new ArrayList<TokenType>(Arrays.asList(
-    TokenType.FUNCTION, TokenType.IDENTIFIER, TokenType.PRINT,
-    TokenType.END, TokenType.IF, TokenType.ELSE, TokenType.WHILE
-  )); */
-
   Parser(List<Token> tokens) {
     this.tokens = tokens;
   }
@@ -141,7 +135,12 @@ private Expression primary() {
 private Expression finishCall(Expression expr) {
   List<Expression> args = new ArrayList<>();
   Token paren = null;
-  while(grabAndGo(TokenType.COMMA)) { if(!compare(TokenType.RIGHT_PAREN)) args.add(expression()); }
+  if (!compare(TokenType.RIGHT_PAREN)) {
+    do {
+      args.add(expression());
+    } while(grabAndGo(TokenType.COMMA));
+  }     
+    
   if(grabAndGo(TokenType.RIGHT_PAREN)) paren = look();
   return new Expression.Call(expr,paren,args);
 }

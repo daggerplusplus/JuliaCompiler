@@ -8,6 +8,14 @@ class Printer implements Expression.Visitor<String>, Statement.Visitor<String> {
     String print(Statement stmt) {
         return stmt.accept(this);
     }
+    @Override
+    public String visitBlockStmt(Statement.Block stmt) {
+        StringBuilder bl = new StringBuilder();
+        for (Statement st:stmt.stmts) {
+            bl.append(st.accept(this));
+        }
+        return bl.toString();
+    }
 
     @Override
     public String visitExprStmt(Statement.Expr stmt) {

@@ -1,10 +1,8 @@
 import java.util.*;
-import java.util.regex.Pattern;
 import java.io.*;
 
 public class Lexer {
   static HashMap<String,ArrayList<String>> map = new HashMap<String,ArrayList<String>>();  
-  private Scanner reader;
   private int position;
   private String input = "";
   private String holdNextLine;
@@ -129,7 +127,7 @@ public class Lexer {
             FileReader fr = new FileReader(getPath());
             BufferedReader br = new BufferedReader(fr);
             String line;            
-            reader = new Scanner(new File(getPath()));
+            //reader = new Scanner(new File(getPath()));
             inputList = new ArrayList<String>();
 
             while ((line = br.readLine()) != null)
@@ -428,7 +426,7 @@ public class Lexer {
       while (isDigit(current())) forward();   }
 
     addToken(TokenType.NUMBER,
-        Double.parseDouble(codePath.substring(start, current)));
+        (codePath.substring(start, current)));
   }
 
       private boolean isDigit(char c) {

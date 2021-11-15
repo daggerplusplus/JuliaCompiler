@@ -10,6 +10,7 @@ abstract class Statement{
     S visitPrintlnStmt(Println stmt);
     S visitWhileStmt(While stmt);
     S visitIfStmt(If stmt);
+    S visitBlockStmt(Block stmt);
   }
 ////////////////////////////////////////////////////////////////////////////////////////////
   static class Expr extends Statement {
@@ -121,6 +122,19 @@ abstract class Statement{
     final Expression initializer;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
-  
+  static class Block extends Statement{
+    Block(List<Statement> stmts) {
+      this.stmts = stmts;
+    }
+
+    @Override
+    <S> S accept(Visitor<S> visitor) {
+      return visitor.visitBlockStmt(this);
+    }
+    final List<Statement> stmts;
+  }
+
+
+
   abstract <S> S accept(Visitor<S> visitor);
 }
